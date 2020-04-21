@@ -13,8 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Enable 8 2MB huge pages.
+echo 8 > /proc/sys/vm/nr_hugepages
+grep Huge /proc/meminfo
+
+# Make everything ptrace-able.
 echo 0 > /proc/sys/kernel/yama/ptrace_scope
+
+# Do not notify external programs about core dumps.
 echo core >/proc/sys/kernel/core_pattern
+
 {% if not local_experiment %}
 while ! docker pull {{docker_image_url}}
 do
